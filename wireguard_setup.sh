@@ -6,6 +6,25 @@
 # 脚本版本
 SCRIPT_VERSION="v0.2.4"
 
+# ==================== sd快捷命令自动安装 ====================
+install_sd_command() {
+    local script_url="https://raw.githubusercontent.com/crypark660/wireguard/main/wireguard_setup.sh"
+    local sb_path="/usr/local/bin/sd"
+
+    if [ "$(id -u)" -ne 0 ]; then
+        return 0
+    fi
+
+    cat > "$sb_path" <<EOF
+#!/bin/bash
+exec sudo bash -c "\$(curl -fsSL '$script_url')"
+EOF
+
+    chmod +x "$sb_path"
+}
+# ============================================================
+
+
 Green="\033[32m"
 Red="\033[31m"
 Yellow='\033[33m'
@@ -2510,6 +2529,7 @@ install_wireguard_client() {
     echo -e "\n${Blue}=== 安装 WireGuard 客户端 ===${Font}"
 
     check_root
+install_sd_command
     detect_os || return 1
 
     # 安装WireGuard工具
