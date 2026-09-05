@@ -9,18 +9,18 @@ SCRIPT_VERSION="v0.2.4"
 # ==================== sd快捷命令自动安装 ====================
 install_sd_command() {
     local script_url="https://raw.githubusercontent.com/crypark660/wireguard/main/wireguard_setup.sh"
-    local sb_path="/usr/local/bin/sd"
+    local sd_path="/usr/local/bin/sd"
 
     if [ "$(id -u)" -ne 0 ]; then
         return 0
     fi
 
-    cat > "$sb_path" <<EOF
+    cat > "$sd_path" <<EOF
 #!/bin/bash
 exec sudo bash -c "\$(curl -fsSL '$script_url')"
 EOF
 
-    chmod +x "$sb_path"
+    chmod +x "$sd_path"
 }
 # ============================================================
 
