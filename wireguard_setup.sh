@@ -2529,7 +2529,6 @@ install_wireguard_client() {
     echo -e "\n${Blue}=== 安装 WireGuard 客户端 ===${Font}"
 
     check_root
-install_sd_command
     detect_os || return 1
 
     # 安装WireGuard工具
@@ -3187,6 +3186,7 @@ check_wireguard_status() {
 
 # 脚本入口
 check_root
+install_sd_command
 
 # 检查WireGuard状态
 wg_status_code=0
