@@ -10,7 +10,6 @@
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/crypark660/wireguard/main/wireguard_setup.sh)"
 ```
 
-> GitHub 会在代码块右上角提供 **Copy** 按钮，可以直接一键复制安装命令。
 
 ## 快捷管理
 
