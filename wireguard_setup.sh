@@ -1741,7 +1741,18 @@ delete_tunnel() {
     rm -f "${WG_DIR}/${WG_INTERFACE}.conf"
     rm -f "${WG_TUNNELS_DIR}/${tunnel_name}.conf"
 
-    # 删除客户端配置
+    
+# 删除快捷命令
+remove_sd_command() {
+    local sd_path="/usr/local/bin/sd"
+
+    if [[ -f "$sd_path" ]]; then
+        rm -f "$sd_path"
+        INFO "快捷命令 sd 已删除"
+    fi
+}
+
+# 删除客户端配置
     rm -f "${WG_CONFIG_DIR}/${tunnel_name}_"*.conf
 
     # 删除密钥文件
@@ -2648,6 +2659,7 @@ uninstall_wireguard_client() {
             ;;
     esac
 
+    remove_sd_command
     INFO "WireGuard 客户端卸载流程完成（如有残留，请手动清理）"
 }
 
@@ -2820,6 +2832,7 @@ uninstall_wireguard() {
         INFO "保留IP转发设置"
     fi
 
+    remove_sd_command
     echo -e "\n${Green}WireGuard已完全卸载${Font}"
     echo "如需重新安装，请重新运行此脚本"
 }
