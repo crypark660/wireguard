@@ -1742,15 +1742,6 @@ delete_tunnel() {
     rm -f "${WG_TUNNELS_DIR}/${tunnel_name}.conf"
 
     
-# 删除快捷命令
-remove_sd_command() {
-    local sd_path="/usr/local/bin/sd"
-
-    if [[ -f "$sd_path" ]]; then
-        rm -f "$sd_path"
-        INFO "快捷命令 sd 已删除"
-    fi
-}
 
 # 删除客户端配置
     rm -f "${WG_CONFIG_DIR}/${tunnel_name}_"*.conf
@@ -1763,6 +1754,16 @@ remove_sd_command() {
 
     INFO "隧道 $tunnel_name 已完全删除"
     CURRENT_TUNNEL=""
+}
+
+# 删除快捷命令
+remove_sd_command() {
+    local sd_path="/usr/local/bin/sd"
+
+    if [[ -f "$sd_path" ]]; then
+        rm -f "$sd_path"
+        INFO "快捷命令 sd 已删除"
+    fi
 }
 
 # 移除防火墙规则
@@ -2737,6 +2738,9 @@ uninstall_wireguard() {
             return 1
         fi
     fi
+
+    # 卸载阶段重新检测包管理器
+    detect_os || return 1
 
     INFO "开始卸载WireGuard..."
 
