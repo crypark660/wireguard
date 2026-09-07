@@ -1961,6 +1961,18 @@ generate_client_config() {
     local client_private=$(cat "${WG_KEYS_DIR}/${tunnel_name}_${client_name}_private.key")
     local server_public=$(cat "${WG_KEYS_DIR}/${tunnel_name}_server_public.key")
 
+    # 生成客户端Endpoint
+    local endpoint
+    if [[ "$PUBLIC_IP" == *:* ]]; then
+        if [[ "$PUBLIC_IP" == \[*\] ]]; then
+            endpoint="${PUBLIC_IP}:$WG_PORT"
+        else
+            endpoint="[${PUBLIC_IP}]:$WG_PORT"
+        fi
+    else
+        endpoint="${PUBLIC_IP}:$WG_PORT"
+    fi
+
     # 生成客户端配置文件（通用格式）
     cat > "$client_config_file" << EOF
 [Interface]
@@ -1970,15 +1982,7 @@ DNS = $dns_servers
 
 [Peer]
 PublicKey = $server_public
-Endpoint = $(if [[ "$PUBLIC_IP" == *:* ]]; then
-    if [[ "$PUBLIC_IP" == \[*\] ]]; then
-        echo "${PUBLIC_IP}:$WG_PORT"
-    else
-        echo "[${PUBLIC_IP}]:$WG_PORT"
-    fi
-else
-    echo "${PUBLIC_IP}:$WG_PORT"
-fi)
+Endpoint = $endpoint
 AllowedIPs = $allowed_ips
 PersistentKeepalive = 15
 EOF
