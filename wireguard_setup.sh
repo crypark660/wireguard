@@ -1970,7 +1970,15 @@ DNS = $dns_servers
 
 [Peer]
 PublicKey = $server_public
-Endpoint = $PUBLIC_IP:$WG_PORT
+Endpoint = $(if [[ "$PUBLIC_IP" == *:* ]]; then
+    if [[ "$PUBLIC_IP" == \[*\] ]]; then
+        echo "${PUBLIC_IP}:$WG_PORT"
+    else
+        echo "[${PUBLIC_IP}]:$WG_PORT"
+    fi
+else
+    echo "${PUBLIC_IP}:$WG_PORT"
+fi)
 AllowedIPs = $allowed_ips
 PersistentKeepalive = 15
 EOF
